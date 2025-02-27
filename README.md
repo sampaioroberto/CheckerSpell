@@ -1,0 +1,2 @@
+# CheckerSpell
+The CheckerSpell Game

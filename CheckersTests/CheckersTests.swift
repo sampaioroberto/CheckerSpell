@@ -1,10 +1,3 @@
-//
-//  CheckersTests.swift
-//  CheckersTests
-//
-//  Created by Betow on 18/02/25.
-//
-
 import Testing
 @testable import Checkers
 

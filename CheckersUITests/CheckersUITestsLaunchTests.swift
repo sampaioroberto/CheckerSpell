@@ -1,10 +1,3 @@
-//
-//  CheckersUITestsLaunchTests.swift
-//  CheckersUITests
-//
-//  Created by Betow on 18/02/25.
-//
-
 import XCTest
 
 final class CheckersUITestsLaunchTests: XCTestCase {
