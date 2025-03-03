@@ -9,21 +9,20 @@ To keep our repository organized and make it easier to track work, we follow thi
 ### 🔹 Types:
 | Type      | Description                                      |
 |-----------|--------------------------------------------------|
-| feature   | For new features or enhancements                |
+| feature   | For new features or enhancements                 |
 | fix       | For bug fixes                                    |
-| chore     | For maintenance tasks (configs, updates, etc.)  |
 | refactor  | For code improvements without functional changes |
-| test      | For adding or updating tests                    |
-| docs      | For documentation updates                       |
+| test      | For adding or updating tests                     |
+| docs      | For documentation updates                        |
 
 ### 🔹 Examples:
-| Purpose                                  | Branch name                    |
-|-------------------------------------------|---------------------------------|
-| Create the Play Screen (Issue #12)       | `feature/12-play-screen`       |
-| Fix piece selection logic (Issue #15)    | `fix/15-piece-selection`       |
-| Refactor board performance (Issue #22)   | `refactor/22-board-optimization`|
-| Update README (Issue #30)                | `docs/30-update-readme`        |
-| Add move tests (Issue #18)               | `test/18-move-tests`           |
+| Purpose                                  | Branch name                      |
+|------------------------------------------|----------------------------------|
+| Create the Play Screen (Issue #12)       | `feature/12-play-screen`         |
+| Fix piece selection logic (Issue #15)    | `fix/15-piece-selection`         |
+| Refactor board performance (Issue #22)   | `refactor/22-board-optimization` |
+| Update README (Issue #30)                | `docs/30-update-readme`          |
+| Add move tests (Issue #18)               | `test/18-move-tests`             |
 
 ### 🔹 Tips:
 - Use **kebab-case** (lowercase with hyphens) for the description.
@@ -35,52 +34,33 @@ To keep our repository organized and make it easier to track work, we follow thi
 
 ## 📝 Commit Message Guidelines
 
-To keep a clear and meaningful commit history, follow this pattern:
-
-```
-<type>: <short-description>
-
-<optional detailed description>
-
-Refs: #<issue-number>
-```
-
-### 🔹 Commit Types:
-- feat: A new feature
-- fix: A bug fix
-- chore: Maintenance tasks
-- refactor: Code improvements
-- test: Adding or updating tests
-- docs: Documentation updates
-
-### 🔹 Example:
-```
-feat: add piece selection logic
-
-Implemented selection logic for pieces on the Play Screen with visual feedback.
-
-Refs: #12
-```
+There's no guideline for commit, since we will squash them when merging the Pull Requests.
 
 ---
 
 ## 🚀 Pull Request Guidelines
 
 When creating a Pull Request:
-- Use a clear and descriptive title.
-- Reference the related issue using keywords like `Closes #<issue-number>`.
+- Title should be in the format `[#<type>-#<issue-number>] Descriptive Title`.
 - Provide a brief summary of the changes.
+- Reference the related issue using keywords like `Closes #<issue-number>`.
 - Include any relevant screenshots or videos if applicable.
-- Ensure all checks pass before requesting a review.
+- Read the summary from Sourcery and adjust (merge the summaries)
+
+### 🔹 Types:
+| Type      | Description                                      |
+|-----------|--------------------------------------------------|
+| FR        | For new features or enhancements                 |
+| FIX       | For bug fixes                                    |
+| REF       | For code improvements without functional changes |
+| TEST      | For adding or updating tests                     |
+| DOC       | For documentation updates                        |
 
 ### 🔹 Example PR Description:
 ```
+## Title: [FR-1] Add Play Screen and selection logic
 ### Summary
 Added piece selection logic to the Play Screen.
-
-### Changes
-- Implemented single piece selection.
-- Added visual feedback for selected pieces.
 
 Closes #12
 ```
