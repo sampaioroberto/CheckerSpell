@@ -1,10 +1,15 @@
 import SwiftUI
 
+struct GridPosition: Equatable {
+  let x: Int
+  let y: Int
+}
+
 struct BoardView: View {
   let size: CGSize
   let columns = Array(repeating: GridItem(.flexible()), count: 8)
   @StateObject var viewModel = BoardViewModel()
-  @State var selectedPosition: CGPoint?
+  @State var selectedPosition: GridPosition?
   
   var body: some View {
     LazyVGrid(columns: columns, spacing: 0) {
@@ -18,13 +23,13 @@ struct BoardView: View {
           if let piece = viewModel.pieces.first(where: { $0.isAtPosition(x: x, y: y) }) {
             PieceView(size: size.width/10, color: piece.color)
           }
-          if selectedPosition == CGPoint(x: x, y: y) {
+          if selectedPosition == GridPosition(x: x, y: y) {
             Color.green.opacity(0.2)
           }
         }
         .onTapGesture {
-          if selectedPosition != CGPoint(x: x, y: y) && viewModel.pieces.contains(where: { $0.isAtPosition(x: x, y: y)}) {
-            selectedPosition = CGPoint(x: x, y: y)
+          if selectedPosition != GridPosition(x: x, y: y) && viewModel.pieces.contains(where: { $0.isAtPosition(x: x, y: y)}) {
+            selectedPosition = GridPosition(x: x, y: y)
           } else {
             selectedPosition = nil
           }
