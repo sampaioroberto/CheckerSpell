@@ -6,7 +6,6 @@ struct HomeView: View {
       LinearGradient(gradient: Gradient(colors: [.black, .brown]), startPoint: .topLeading, endPoint: .bottomTrailing)
         .edgesIgnoringSafeArea(.all)
       VStack {
-        //Spacer()
         HStack {
           Spacer()
           Text("CheckerSpells")
