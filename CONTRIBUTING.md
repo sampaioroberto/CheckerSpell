@@ -41,7 +41,7 @@ There's no guideline for commit, since we will squash them when merging the Pull
 ## 🚀 Pull Request Guidelines
 
 When creating a Pull Request:
-- Title should be in the format `[#<type>-#<issue-number>] Descriptive Title`.
+- Title should be in the format `[#<TYPE>-#<issue-number>] Descriptive Title`.
 - Provide a brief summary of the changes.
 - Reference the related issue using keywords like `Closes #<issue-number>`.
 - Include any relevant screenshots or videos if applicable.
