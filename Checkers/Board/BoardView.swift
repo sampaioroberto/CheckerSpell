@@ -15,7 +15,7 @@ struct BoardView: View {
           Rectangle()
             .fill((index / 8 + index % 8) % 2 == 0 ? Color.white : Color.brown)
             .frame(width: size.width/8, height: size.width/8)
-          if let piece = viewModel.pieces.first(where: { $0.isAtPosition(x: x, y: y) }) {
+          if let piece = viewModel.pieces.first(where: { $0.isAt(position: currentPosition) }) {
             PieceView(size: size.width/10, color: piece.color)
           }
           if viewModel.selectedPosition == currentPosition {
@@ -27,7 +27,7 @@ struct BoardView: View {
           }
         }
         .onTapGesture {
-          viewModel.tapOn(x: x, y: y)
+          viewModel.tapOn(position: GridPosition(x: x, y: y))
         }
       }
     }
