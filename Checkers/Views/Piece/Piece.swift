@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Piece: Identifiable {
+struct Piece: Identifiable, Hashable {
   let id = UUID()
   let starterPlayer: Bool
   let position: GridPosition
@@ -9,40 +9,12 @@ struct Piece: Identifiable {
     starterPlayer ? .lightPiece : .black
   }
   
-  func isAtPosition(x: Int, y: Int) -> Bool {
-    position.x == x && position.y == y
+  func validMoves(for pieces: Pieces) -> Set<GridPosition> {
+    (starterPlayer ? position.adjacents.filter({$0.y < position.y}) : position.adjacents.filter({$0.y > position.y}))
+      .subtracting(pieces.map {$0.position} )
   }
-}
-
-typealias Pieces = [Piece]
-
-extension Array where Element == Piece {
-  static let start: [Piece] = {
-    [
-      Piece(starterPlayer: false, position: GridPosition(x: 1, y: 0)),
-      Piece(starterPlayer: false, position: GridPosition(x: 3, y: 0)),
-      Piece(starterPlayer: false, position: GridPosition(x: 5, y: 0)),
-      Piece(starterPlayer: false, position: GridPosition(x: 7, y: 0)),
-      Piece(starterPlayer: false, position: GridPosition(x: 0, y: 1)),
-      Piece(starterPlayer: false, position: GridPosition(x: 2, y: 1)),
-      Piece(starterPlayer: false, position: GridPosition(x: 4, y: 1)),
-      Piece(starterPlayer: false, position: GridPosition(x: 6, y: 1)),
-      Piece(starterPlayer: false, position: GridPosition(x: 1, y: 2)),
-      Piece(starterPlayer: false, position: GridPosition(x: 3, y: 2)),
-      Piece(starterPlayer: false, position: GridPosition(x: 5, y: 2)),
-      Piece(starterPlayer: false, position: GridPosition(x: 7, y: 2)),
-      Piece(starterPlayer: true, position: GridPosition(x: 0, y: 7)),
-      Piece(starterPlayer: true, position: GridPosition(x: 2, y: 7)),
-      Piece(starterPlayer: true, position: GridPosition(x: 4, y: 7)),
-      Piece(starterPlayer: true, position: GridPosition(x: 6, y: 7)),
-      Piece(starterPlayer: true, position: GridPosition(x: 1, y: 6)),
-      Piece(starterPlayer: true, position: GridPosition(x: 3, y: 6)),
-      Piece(starterPlayer: true, position: GridPosition(x: 5, y: 6)),
-      Piece(starterPlayer: true, position: GridPosition(x: 7, y: 6)),
-      Piece(starterPlayer: true, position: GridPosition(x: 0, y: 5)),
-      Piece(starterPlayer: true, position: GridPosition(x: 2, y: 5)),
-      Piece(starterPlayer: true, position: GridPosition(x: 4, y: 5)),
-      Piece(starterPlayer: true, position: GridPosition(x: 6, y: 5))
-    ]
-  }()
+  
+  func isAt(position: GridPosition) -> Bool {
+    self.position == position
+  }
 }
