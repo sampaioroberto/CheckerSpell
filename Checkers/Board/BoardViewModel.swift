@@ -5,12 +5,14 @@ final class BoardViewModel: ObservableObject {
   @Published var selectedPosition: GridPosition?
   @Published var validMoves = Set<GridPosition>()
   private var starterPlayerTurn = true
+  private var isMultiCapturing = false
   
   func tapOn(position: GridPosition) {
     if let selectedPosition {
       if let piece = pieces
         .filter({$0.starterPlayer == starterPlayerTurn})
         .first(where: { $0.isAt(position: position) }) {
+        guard isMultiCapturing == false else { return }
         select(piece, at: position)
       } else {
         if let piece = pieces.first(where: { $0.isAt(position: selectedPosition) }),
@@ -18,6 +20,15 @@ final class BoardViewModel: ObservableObject {
           movePiece(piece, to: move.destination)
           if let capturedPiece = pieces.first(where: { $0.position == move.capturePosition}) {
             pieces.remove(capturedPiece)
+            if let newPositionPiece = pieces.first(where: { $0.isAt(position: move.destination) }),
+                  newPositionPiece.validMoves(for: pieces).contains(where: { $0.isCapture }) {
+              isMultiCapturing = true
+              select(newPositionPiece, at: position)
+            } else {
+              changeTurn()
+            }
+          } else {
+            changeTurn()
           }
         }
       }
@@ -44,6 +55,9 @@ final class BoardViewModel: ObservableObject {
     pieces.remove(piece)
     let newPositionPiece = Piece(starterPlayer: piece.starterPlayer, position: position)
     pieces.insert(newPositionPiece)
+  }
+  
+  func changeTurn() {
     clearSelection()
     starterPlayerTurn.toggle()
   }
