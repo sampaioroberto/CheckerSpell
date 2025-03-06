@@ -21,7 +21,7 @@ struct BoardView: View {
           if viewModel.selectedPosition == currentPosition {
             Color.green.opacity(0.2)
           }
-          if viewModel.possibleMoves.contains(currentPosition) {
+          if viewModel.validMoves.contains(currentPosition) {
             PieceView(size: size.width/10, color: Color.green.opacity(0.2))
               .blur(radius: 1)
           }

@@ -1,25 +1,20 @@
+enum Direction {
+  case upLeft
+  case upRight
+  case downLeft
+  case downRight
+}
+
 struct GridPosition: Equatable, Hashable {
   let x: Int
   let y: Int
   
-  var adjacents: Set<GridPosition> {
-    var moves = Set<GridPosition>()
-    if y-1 >= 0 {
-      if x-1 >= 0 {
-        moves.insert(GridPosition(x: x-1, y: y-1))
-      }
-      if x+1 <= 8 {
-        moves.insert(GridPosition(x: x+1, y: y-1))
-      }
+  func nextPosition(_ direction: Direction) -> GridPosition? {
+    switch direction {
+    case .upLeft: return y-1 >= 0 && x-1 >= 0 ? GridPosition(x: x-1, y: y-1) : nil
+    case .upRight: return y-1 >= 0 && x+1 <= 7 ? GridPosition(x: x+1, y: y-1) : nil
+    case .downLeft: return y+1 <= 7 && x-1 >= 0 ? GridPosition(x: x-1, y: y+1) : nil
+    case .downRight: return y+1 <= 7 && x+1 <= 7 ? GridPosition(x: x+1, y: y+1) : nil
     }
-    if y+1 <= 8 {
-      if x-1 >= 0 {
-        moves.insert(GridPosition(x: x-1, y: y+1))
-      }
-      if x+1 <= 8 {
-        moves.insert(GridPosition(x: x+1, y: y+1))
-      }
-    }
-    return moves
   }
 }
