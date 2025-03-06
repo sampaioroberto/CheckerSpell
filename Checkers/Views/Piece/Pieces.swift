@@ -29,4 +29,17 @@ extension Set where Element == Piece {
       Piece(starterPlayer: true, position: GridPosition(x: 6, y: 5))
     ]
   }()
+  
+  func containsPiece(at position: GridPosition) -> Bool {
+    contains { $0.position == position }
+  }
+  
+  func containsCaptureMoveForOthersThan(_ targetPiece: Piece, starterPlayer: Bool) -> Bool {
+    for piece in filter({ $0.starterPlayer == starterPlayer && $0 != targetPiece }) {
+      if piece.possibleMoves(for: self).contains(where: { $0.isCapture }) {
+        return true
+      }
+    }
+    return false
+  }
 }

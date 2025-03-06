@@ -3,7 +3,7 @@ import SwiftUI
 final class BoardViewModel: ObservableObject {
   @Published var pieces = Pieces.start
   @Published var selectedPosition: GridPosition?
-  @Published var possibleMoves = Set<GridPosition>()
+  @Published var validMoves = Set<GridPosition>()
   private var starterPlayerTurn = true
   
   func tapOn(position: GridPosition) {
@@ -14,8 +14,11 @@ final class BoardViewModel: ObservableObject {
         select(piece, at: position)
       } else {
         if let piece = pieces.first(where: { $0.isAt(position: selectedPosition) }),
-            piece.validMoves(for: pieces).contains(position) {
-          move(piece, to: position)
+           let move = piece.validMoves(for: pieces).first(where: {$0.destination == position }) {
+          movePiece(piece, to: move.destination)
+          if let capturedPiece = pieces.first(where: { $0.position == move.capturePosition}) {
+            pieces.remove(capturedPiece)
+          }
         }
       }
     } else {
@@ -29,15 +32,15 @@ final class BoardViewModel: ObservableObject {
   
   func select(_ piece: Piece, at position: GridPosition) {
     selectedPosition = position
-    possibleMoves = piece.validMoves(for: pieces)
+    validMoves = Set(piece.validMoves(for: pieces).map({$0.destination}))
   }
   
   func clearSelection() {
     selectedPosition = nil
-    possibleMoves = []
+    validMoves = []
   }
   
-  func move(_ piece: Piece, to position: GridPosition) {
+  func movePiece(_ piece: Piece, to position: GridPosition) {
     pieces.remove(piece)
     let newPositionPiece = Piece(starterPlayer: piece.starterPlayer, position: position)
     pieces.insert(newPositionPiece)
