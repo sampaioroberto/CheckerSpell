@@ -18,7 +18,7 @@ struct Piece: Hashable {
   }
   
   func possibleMoves(for pieces: Pieces) -> Set<Move> {
-    var validMoves = Set([
+    let validMoves = Set([
       nextMove(at: starterPlayer ? .upLeft : .downLeft, on: pieces),
       nextMove(at: starterPlayer ? .upRight : .downRight, on: pieces),
       nextMove(at: starterPlayer ? .downLeft : .upLeft, on: pieces, shouldBeACapture: true),
@@ -40,11 +40,10 @@ private extension Piece {
     guard let piece = pieces.first(where: { $0.position == nextPosition }) else {
       return shouldBeACapture ? nil : Move(destination: nextPosition)
     }
-    if piece.starterPlayer != starterPlayer,
-       let positionAfterJump = piece.position.nextPosition(direction),
-       !pieces.containsPiece(at: positionAfterJump) {
-      return Move(destination: positionAfterJump, capturePosition: nextPosition)
-    }
-    return nil
+    guard piece.starterPlayer != starterPlayer,
+          let positionAfterJump = piece.position.nextPosition(direction),
+          !pieces.containsPiece(at: positionAfterJump) else { return nil }
+      
+    return Move(destination: positionAfterJump, capturePosition: nextPosition)
   }
 }

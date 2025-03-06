@@ -31,7 +31,7 @@ extension Set where Element == Piece {
   }()
   
   func containsPiece(at position: GridPosition) -> Bool {
-    map({$0.position}).contains(position)
+    contains { $0.position == position }
   }
   
   func containsCaptureMoveForOthersThan(_ targetPiece: Piece, starterPlayer: Bool) -> Bool {
