@@ -60,5 +60,6 @@ final class BoardViewModel: ObservableObject {
   func changeTurn() {
     clearSelection()
     starterPlayerTurn.toggle()
+    isMultiCapturing = false
   }
 }
