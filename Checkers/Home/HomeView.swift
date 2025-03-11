@@ -21,7 +21,7 @@ struct HomeView: View {
         }
         VStack(spacing: 16) {
           HStack(spacing: 16) {
-            PieceView(size: 50, color: .lightPiece)
+            PieceView(size: 50, color: .lightPiece, type: .default)
             NavigationLink(destination: {
               MatchView()
             }, label: {
@@ -29,10 +29,10 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, maxHeight: 40)
             })
             
-            PieceView(size: 50, color: Color.black)
+            PieceView(size: 50, color: Color.black, type: .default)
           }
           HStack(spacing: 16) {
-            PieceView(size: 50, color: .black)
+            PieceView(size: 50, color: .black, type: .king)
             Button {
               
             } label: {
@@ -40,10 +40,10 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, maxHeight: 40)
             }
             .buttonStyle(MenuButtonStyle())
-            PieceView(size: 50, color: Color.lightPiece)
+            PieceView(size: 50, color: Color.lightPiece, type: .king)
           }
           HStack(spacing: 16) {
-            PieceView(size: 50, color: .lightPiece)
+            PieceView(size: 50, color: .lightPiece, type: .default)
             Button {
               
             } label: {
@@ -51,7 +51,7 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, maxHeight: 40)
             }
             .buttonStyle(MenuButtonStyle())
-            PieceView(size: 50, color: Color.black)
+            PieceView(size: 50, color: Color.black, type: .default)
           }
         }
       }
