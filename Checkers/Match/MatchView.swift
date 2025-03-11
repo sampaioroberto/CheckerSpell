@@ -10,7 +10,7 @@ struct MatchView: View {
           PieceView(
             size: 20,
             color: Piece.color(
-              starterPlayer: viewModel.starterPlayerTurn
+              starterPlayer: viewModel.isFirstPlayerTurn
             ),
             type: .default
           )
