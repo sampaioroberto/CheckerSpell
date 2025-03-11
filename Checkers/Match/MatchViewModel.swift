@@ -5,13 +5,15 @@ final class MatchViewModel: ObservableObject {
   @Published var selectedPosition: GridPosition?
   @Published var lastMovePositions = [GridPosition]()
   @Published var validMoves = [GridPosition]()
-  @Published var starterPlayerTurn = true
+  @Published var isFirstPlayerTurn = true
+  @Published var isEndGame = false
   private var isMultiCapturing = false
   
   func tapOn(position: GridPosition) {
+    guard isEndGame == false else { return }
     if let selectedPosition {
       if let piece = pieces
-        .filter({$0.starterPlayer == starterPlayerTurn})
+        .filter({$0.starterPlayer == isFirstPlayerTurn})
         .first(where: { $0.isAt(position: position) }) {
         guard isMultiCapturing == false else { return }
         select(piece, at: position)
@@ -35,7 +37,7 @@ final class MatchViewModel: ObservableObject {
       }
     } else {
       if let piece = pieces
-        .filter({$0.starterPlayer == starterPlayerTurn})
+        .filter({$0.starterPlayer == isFirstPlayerTurn})
         .first(where: { $0.isAt(position: position) }) {
         select(piece, at: position)
       }
@@ -69,9 +71,17 @@ final class MatchViewModel: ObservableObject {
   
   func changeTurn() {
     clearSelection()
-    starterPlayerTurn.toggle()
     isMultiCapturing = false
     
     pieces.forEach({$0.updateTypeIfNeeded()})
+    
+    let enemyPieces = pieces.filter({$0.starterPlayer != isFirstPlayerTurn})
+    let noValidMoves = !enemyPieces.contains(where: { $0.validMoves(for: pieces).isNotEmpty })
+    
+    if noValidMoves {
+      isEndGame = true
+    } else {
+      isFirstPlayerTurn.toggle()
+    }
   }
 }

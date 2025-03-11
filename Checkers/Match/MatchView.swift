@@ -6,19 +6,19 @@ struct MatchView: View {
     GeometryReader { proxy in
       VStack {
         HStack {
-          Text("Turn:")
-            PieceView(
-              size: 20,
-              color: Piece.color(
-                starterPlayer: viewModel.starterPlayerTurn
-              ),
-              type: .default)
+          Text(viewModel.isEndGame ? "Winner:": "Turn:")
+          PieceView(
+            size: 20,
+            color: Piece.color(
+              starterPlayer: viewModel.isFirstPlayerTurn
+            ),
+            type: .default
+          )
         }
-        
         Spacer()
         BoardView(size: proxy.size, viewModel: viewModel)
         Spacer()
-      } 
+      }
     }
   }
 }
