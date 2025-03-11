@@ -4,7 +4,7 @@ struct PieceView: View {
   var size: CGFloat
   var color: Color
   var type: PieceType
-  @State private var showKing = false // Adicionada variável para controlar a exibição do ícone
+  @State private var showKing = false
 
   var body: some View {
     ZStack {

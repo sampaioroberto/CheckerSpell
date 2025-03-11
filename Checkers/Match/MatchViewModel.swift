@@ -1,10 +1,11 @@
 import SwiftUI
 
-final class BoardViewModel: ObservableObject {
+final class MatchViewModel: ObservableObject {
   @Published var pieces = Pieces.start
   @Published var selectedPosition: GridPosition?
+  @Published var lastMovePositions = [GridPosition]()
   @Published var validMoves = [GridPosition]()
-  private var starterPlayerTurn = true
+  @Published var starterPlayerTurn = true
   private var isMultiCapturing = false
   
   init() {
@@ -58,6 +59,7 @@ final class BoardViewModel: ObservableObject {
   }
   
   func move(_ piece: Piece, to position: GridPosition) {
+    lastMovePositions = [piece.position, position]
     withAnimation {
       piece.move(to: position)
     }

@@ -13,7 +13,7 @@ final class Piece: Identifiable {
   var type: PieceType
   
   var color: Color {
-    starterPlayer ? .lightPiece : .black
+    Piece.color(starterPlayer: starterPlayer)
   }
   
   init(starterPlayer: Bool, position: GridPosition, type: PieceType = .default) {
@@ -131,5 +131,11 @@ private extension Piece {
       nextPosition = positionAfterJump
     }
     return validMoves
+  }
+}
+
+extension Piece {
+  static func color(starterPlayer: Bool) -> Color {
+    starterPlayer ? .lightPiece : .black
   }
 }

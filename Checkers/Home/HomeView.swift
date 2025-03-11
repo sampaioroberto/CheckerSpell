@@ -16,7 +16,7 @@ struct HomeView: View {
         }
         .background(LinearGradient(gradient: Gradient(colors: [.white, .black]), startPoint: .top, endPoint: .bottom))
         GeometryReader { proxy in
-          BoardView(size: proxy.size)
+          BoardView(size: proxy.size, viewModel: MatchViewModel())
             .frame(width: proxy.size.width, height: proxy.size.height)
         }
         VStack(spacing: 16) {

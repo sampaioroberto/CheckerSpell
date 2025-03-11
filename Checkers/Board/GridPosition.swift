@@ -17,4 +17,9 @@ struct GridPosition: Equatable, Hashable {
     case .downRight: return y+1 <= 7 && x+1 <= 7 ? GridPosition(x: x+1, y: y+1) : nil
     }
   }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(x)
+    hasher.combine(y)
+  }
 }
