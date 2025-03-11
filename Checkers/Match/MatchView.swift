@@ -1,13 +1,28 @@
 import SwiftUI
 
 struct MatchView: View {
+  @StateObject var viewModel = MatchViewModel()
   var body: some View {
     GeometryReader { proxy in
-      BoardView(size: proxy.size)
+      VStack {
+        HStack {
+          Text("Turn:")
+            PieceView(
+              size: 20,
+              color: Piece.color(
+                starterPlayer: viewModel.starterPlayerTurn
+              ),
+              type: .default)
+        }
+        
+        Spacer()
+        BoardView(size: proxy.size, viewModel: viewModel)
+        Spacer()
+      } 
     }
   }
 }
 
 #Preview {
-  MatchView()
+  MatchView(viewModel: MatchViewModel())
 }

@@ -1,15 +1,12 @@
 import SwiftUI
 
-final class BoardViewModel: ObservableObject {
+final class MatchViewModel: ObservableObject {
   @Published var pieces = Pieces.start
   @Published var selectedPosition: GridPosition?
+  @Published var lastMovePositions = [GridPosition]()
   @Published var validMoves = [GridPosition]()
-  private var starterPlayerTurn = true
+  @Published var starterPlayerTurn = true
   private var isMultiCapturing = false
-  
-  init() {
-    print("BoardViewModel inicializado")
-  }
   
   func tapOn(position: GridPosition) {
     if let selectedPosition {
@@ -58,6 +55,7 @@ final class BoardViewModel: ObservableObject {
   }
   
   func move(_ piece: Piece, to position: GridPosition) {
+    lastMovePositions = [piece.position, position]
     withAnimation {
       piece.move(to: position)
     }

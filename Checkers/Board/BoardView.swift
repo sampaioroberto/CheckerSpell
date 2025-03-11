@@ -3,7 +3,7 @@ import SwiftUI
 struct BoardView: View {
   let size: CGSize
   let columns = Array(repeating: GridItem(.flexible()), count: 8)
-  @StateObject var viewModel = BoardViewModel()
+  @ObservedObject var viewModel: MatchViewModel
   
   var body: some View {
     ZStack {
@@ -28,7 +28,7 @@ struct BoardView: View {
                 x: CGFloat(position.x) * (size.width / 8) + (size.width / 16),
                 y: CGFloat(position.y) * (size.width / 8) + (size.width / 16)
               )
-              
+              .allowsHitTesting(false)
           }
         }
       }
@@ -39,10 +39,20 @@ struct BoardView: View {
             x: CGFloat(piece.position.x) * (size.width / 8) + (size.width / 16),
             y: CGFloat(piece.position.y) * (size.width / 8) + (size.width / 16)
           )
+          .allowsHitTesting(false)
           .transition(.opacity)
           .zIndex(1)
           .animation(.easeInOut(duration: 0.3), value: piece.position)
-          
+      }
+      
+      ForEach(viewModel.lastMovePositions, id: \.self) { position in
+        Color.yellow.opacity(0.4)
+          .frame(width: size.width/8, height: size.width/8)
+          .position(
+            x: CGFloat(position.x) * (size.width / 8) + (size.width / 16),
+            y: CGFloat(position.y) * (size.width / 8) + (size.width / 16)
+          )
+          .allowsHitTesting(false)
       }
       
       if let selectedPosition = viewModel.selectedPosition {
@@ -54,11 +64,11 @@ struct BoardView: View {
           )
       }
     }
-    .frame(width: size.width, height: size.height)
+    .frame(width: size.width, height: size.width)
     .northWestShadow(highlightColor: .black, shadowColor: .white)
   }
 }
 
 #Preview {
-  BoardView(size: CGSize(width: 400, height: 400))
+  BoardView(size: CGSize(width: 400, height: 400), viewModel: MatchViewModel())
 }
