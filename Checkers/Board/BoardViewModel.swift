@@ -3,9 +3,13 @@ import SwiftUI
 final class BoardViewModel: ObservableObject {
   @Published var pieces = Pieces.start
   @Published var selectedPosition: GridPosition?
-  @Published var validMoves = Set<GridPosition>()
+  @Published var validMoves = [GridPosition]()
   private var starterPlayerTurn = true
   private var isMultiCapturing = false
+  
+  init() {
+    print("BoardViewModel inicializado")
+  }
   
   func tapOn(position: GridPosition) {
     if let selectedPosition {
@@ -16,11 +20,11 @@ final class BoardViewModel: ObservableObject {
         select(piece, at: position)
       } else {
         if let piece = pieces.first(where: { $0.isAt(position: selectedPosition) }),
-           let move = piece.validMoves(for: pieces).first(where: {$0.destination == position }) {
-          movePiece(piece, to: move.destination)
-          if let capturedPiece = pieces.first(where: { $0.position == move.capturePosition}) {
-            pieces.remove(capturedPiece)
-            if let newPositionPiece = pieces.first(where: { $0.isAt(position: move.destination) }),
+           let movement = piece.validMoves(for: pieces).first(where: {$0.destination == position }) {
+          move(piece, to: movement.destination)
+          if let capturedPiece = pieces.first(where: { $0.position == movement.capturePosition}) {
+            remove(capturedPiece)
+            if let newPositionPiece = pieces.first(where: { $0.isAt(position: movement.destination) }),
                   newPositionPiece.validMoves(for: pieces).contains(where: { $0.isCapture }) {
               isMultiCapturing = true
               select(newPositionPiece, at: position)
@@ -43,7 +47,9 @@ final class BoardViewModel: ObservableObject {
   
   func select(_ piece: Piece, at position: GridPosition) {
     selectedPosition = position
-    validMoves = Set(piece.validMoves(for: pieces).map({$0.destination}))
+    withAnimation {
+      validMoves = piece.validMoves(for: pieces).map({$0.destination})
+    }
   }
   
   func clearSelection() {
@@ -51,15 +57,23 @@ final class BoardViewModel: ObservableObject {
     validMoves = []
   }
   
-  func movePiece(_ piece: Piece, to position: GridPosition) {
-    pieces.remove(piece)
-    let newPositionPiece = Piece(starterPlayer: piece.starterPlayer, position: position)
-    pieces.insert(newPositionPiece)
+  func move(_ piece: Piece, to position: GridPosition) {
+    withAnimation {
+      piece.move(to: position)
+    }
+  }
+  
+  func remove(_ piece: Piece) {
+    withAnimation {
+      pieces.removeAll(where: {$0.id == piece.id })
+    }
   }
   
   func changeTurn() {
     clearSelection()
     starterPlayerTurn.toggle()
     isMultiCapturing = false
+    
+    pieces.forEach({$0.updateTypeIfNeeded()})
   }
 }

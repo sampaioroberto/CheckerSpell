@@ -1,7 +1,7 @@
-typealias Pieces = Set<Piece>
+typealias Pieces = [Piece]
 
-extension Set where Element == Piece {
-  static let start: Set<Piece> = {
+extension Array where Element == Piece {
+  static var start: [Piece] {
     [
       Piece(starterPlayer: false, position: GridPosition(x: 1, y: 0)),
       Piece(starterPlayer: false, position: GridPosition(x: 3, y: 0)),
@@ -28,7 +28,7 @@ extension Set where Element == Piece {
       Piece(starterPlayer: true, position: GridPosition(x: 4, y: 5)),
       Piece(starterPlayer: true, position: GridPosition(x: 6, y: 5))
     ]
-  }()
+  }
   
   func containsPiece(at position: GridPosition) -> Bool {
     contains { $0.position == position }
