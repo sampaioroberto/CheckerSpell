@@ -6,6 +6,7 @@ final class MatchViewModel: ObservableObject {
   @Published var lastMovePositions = [GridPosition]()
   @Published var validMoves = [GridPosition]()
   @Published var starterPlayerTurn = true
+  @Published var isEndGame = false
   private var isMultiCapturing = false
   
   func tapOn(position: GridPosition) {
@@ -69,9 +70,17 @@ final class MatchViewModel: ObservableObject {
   
   func changeTurn() {
     clearSelection()
-    starterPlayerTurn.toggle()
     isMultiCapturing = false
     
     pieces.forEach({$0.updateTypeIfNeeded()})
+    
+    let enemyPieces = pieces.filter({!$0.starterPlayer})
+    let noValidMoves = !enemyPieces.contains(where: { $0.validMoves(for: pieces).isNotEmpty })
+    
+    if noValidMoves {
+      isEndGame = true
+    } else {
+      starterPlayerTurn.toggle()
+    }
   }
 }
