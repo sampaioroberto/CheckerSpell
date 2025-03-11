@@ -8,10 +8,6 @@ final class MatchViewModel: ObservableObject {
   @Published var starterPlayerTurn = true
   private var isMultiCapturing = false
   
-  init() {
-    print("BoardViewModel inicializado")
-  }
-  
   func tapOn(position: GridPosition) {
     if let selectedPosition {
       if let piece = pieces
