@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
+  @State var startNewGame = false
   var body: some View {
     ZStack {
       LinearGradient(gradient: Gradient(colors: [.black, .brown]), startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -22,14 +23,15 @@ struct HomeView: View {
         VStack(spacing: 16) {
           HStack(spacing: 16) {
             PieceView(size: 50, color: .lightPiece, type: .default)
-            NavigationLink(destination: {
-              MatchView()
-            }, label: {
+            Button {
+              startNewGame = true
+            } label: {
               Text("Play Game")
                 .frame(maxWidth: .infinity, maxHeight: 40)
-            })
-            
+            }
+            .buttonStyle(MenuButtonStyle())
             PieceView(size: 50, color: Color.black, type: .default)
+            
           }
           HStack(spacing: 16) {
             PieceView(size: 50, color: .black, type: .king)
@@ -60,7 +62,9 @@ struct HomeView: View {
       .clipShape(.rect(cornerRadius: 16))
       .padding(16)
     }
-    
+    .fullScreenCover(isPresented: $startNewGame) {
+      MatchView(showGameScreen: $startNewGame)
+    }
   }
 }
 

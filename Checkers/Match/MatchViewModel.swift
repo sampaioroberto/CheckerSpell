@@ -84,4 +84,14 @@ final class MatchViewModel: ObservableObject {
       isFirstPlayerTurn.toggle()
     }
   }
+  
+  func restartGame() {
+    self.pieces = Pieces.start
+    isFirstPlayerTurn = true
+    clearSelection()
+    isMultiCapturing = false
+    isEndGame = false
+    validMoves = []
+    lastMovePositions = []
+  }
 }
