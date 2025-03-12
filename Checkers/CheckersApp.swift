@@ -4,9 +4,7 @@ import SwiftUI
 struct CheckersApp: App {
   var body: some Scene {
     WindowGroup {
-      NavigationView {
-        HomeView()
-      }
+      HomeView()
     }
   }
 }
