@@ -7,10 +7,16 @@ final class MatchViewModel: ObservableObject {
   @Published var validMoves = [GridPosition]()
   @Published var isFirstPlayerTurn = true
   @Published var isEndGame = false
+  let isVsComputer: Bool
   private var isMultiCapturing = false
-  
+
+  init(isVsComputer: Bool = false) {
+    self.isVsComputer = isVsComputer
+  }
+
   func tapOn(position: GridPosition) {
     guard isEndGame == false else { return }
+    guard isFirstPlayerTurn || !isVsComputer else { return }
     if let selectedPosition {
       if let piece = pieces
         .filter({$0.starterPlayer == isFirstPlayerTurn})
@@ -69,6 +75,25 @@ final class MatchViewModel: ObservableObject {
     }
   }
   
+  func computerMove(_ piece: Piece, to position: GridPosition) async {
+    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 segundos
+    await MainActor.run {
+      self.lastMovePositions = [piece.position, position]
+      withAnimation {
+        piece.move(to: position)
+      }
+    }
+  }
+  
+  func computerRemove(_ piece: Piece) async {
+    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 segundos
+    await MainActor.run {
+      withAnimation {
+        self.pieces.removeAll(where: { $0.id == piece.id })
+      }
+    }
+  }
+  
   func changeTurn() {
     clearSelection()
     isMultiCapturing = false
@@ -82,6 +107,42 @@ final class MatchViewModel: ObservableObject {
       isEndGame = true
     } else {
       isFirstPlayerTurn.toggle()
+      if isVsComputer {
+        Task {
+          await checkComputerTurn()
+        }
+      }
+    }
+  }
+  
+  func checkComputerTurn() async {
+    guard !isFirstPlayerTurn else { return }
+    
+    let computerPieces = pieces.filter({$0.starterPlayer == false})
+    let validPieces = computerPieces.filter({ $0.validMoves(for: pieces).isNotEmpty })
+    
+    guard let piece = validPieces.randomElement() else { return }
+    let validMoves = piece.validMoves(for: pieces)
+    guard let movement = validMoves.randomElement() else { return }
+    await computerMove(piece, to: movement.destination)
+    
+    if movement.isCapture {
+      if let capturedPiece = pieces.first(where: { $0.position == movement.capturePosition}) {
+        await computerRemove(capturedPiece)
+      }
+      while true {
+        if let newMove = piece.validMoves(for: pieces).first(where: { $0.isCapture }) {
+          await computerMove(piece, to: newMove.destination)
+          if let capturedPiece = pieces.first(where: { $0.position == newMove.capturePosition}) {
+            await computerRemove(capturedPiece)
+          }
+        } else {
+          break
+        }
+      }
+    }
+    await MainActor.run {
+      self.changeTurn()
     }
   }
   

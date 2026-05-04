@@ -1,9 +1,15 @@
 import SwiftUI
 
 struct MatchView: View {
-  @StateObject var viewModel = MatchViewModel()
+  @StateObject private var viewModel: MatchViewModel
   @Binding var showGameScreen: Bool
   @State var showAlertExitConfirmation = false
+
+  init(isVsComputer: Bool = false, showGameScreen: Binding<Bool>) {
+    self._viewModel = StateObject(wrappedValue: MatchViewModel(isVsComputer: isVsComputer))
+    self._showGameScreen = showGameScreen
+  }
+
   var body: some View {
     GeometryReader { proxy in
       VStack {
@@ -50,5 +56,5 @@ struct MatchView: View {
 
 #Preview {
   @Previewable @State var showGameScreen = true
-  MatchView(viewModel: MatchViewModel(), showGameScreen: $showGameScreen)
+  MatchView(showGameScreen: $showGameScreen)
 }

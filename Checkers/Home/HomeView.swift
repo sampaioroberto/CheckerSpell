@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
   @State var startNewGame = false
+  @State var isVsComputer = false
   var body: some View {
     ZStack {
       LinearGradient(gradient: Gradient(colors: [.black, .brown]), startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -24,14 +25,26 @@ struct HomeView: View {
           HStack(spacing: 16) {
             PieceView(size: 50, color: .lightPiece, type: .default)
             Button {
+              isVsComputer = true
               startNewGame = true
             } label: {
-              Text("Play Game")
+              Text("vs Computer")
                 .frame(maxWidth: .infinity, maxHeight: 40)
             }
             .buttonStyle(MenuButtonStyle())
             PieceView(size: 50, color: Color.black, type: .default)
-            
+          }
+          HStack(spacing: 16) {
+            PieceView(size: 50, color: .black, type: .king)
+            Button {
+              isVsComputer = false
+              startNewGame = true
+            } label: {
+              Text("2 Players")
+                .frame(maxWidth: .infinity, maxHeight: 40)
+            }
+            .buttonStyle(MenuButtonStyle())
+            PieceView(size: 50, color: Color.lightPiece, type: .king)
           }
           HStack(spacing: 16) {
             PieceView(size: 50, color: .black, type: .king)
@@ -63,7 +76,7 @@ struct HomeView: View {
       .padding(16)
     }
     .fullScreenCover(isPresented: $startNewGame) {
-      MatchView(showGameScreen: $startNewGame)
+      MatchView(isVsComputer: isVsComputer, showGameScreen: $startNewGame)
     }
   }
 }
