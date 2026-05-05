@@ -77,16 +77,16 @@ final class MatchViewModel: ObservableObject {
     }
   }
 
-  func computerMove(_ piece: Piece, to position: GridPosition) async {
-    try? await Task.sleep(nanoseconds: 500_000_000)
+  private func computerMove(_ piece: Piece, to position: GridPosition) async {
+    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     lastMovePositions = [piece.position, position]
     withAnimation {
       piece.move(to: position)
     }
   }
 
-  func computerRemove(_ piece: Piece) async {
-    try? await Task.sleep(nanoseconds: 500_000_000)
+  private func computerRemove(_ piece: Piece) async {
+    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     withAnimation {
       pieces.removeAll(where: { $0.id == piece.id })
     }
@@ -113,7 +113,7 @@ final class MatchViewModel: ObservableObject {
     }
   }
 
-  func checkComputerTurn() async {
+  private func checkComputerTurn() async {
     guard !Task.isCancelled else { return }
     guard !isFirstPlayerTurn else { return }
 
